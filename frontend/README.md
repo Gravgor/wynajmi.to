@@ -25,8 +25,8 @@ Real Estate Listing App to nowoczesna aplikacja do wyszukiwania mieszkań i nier
 1. **Sklonuj repozytorium:**
 
     ```bash
-    git clone https://github.com/yourusername/real-estate-listing-app.git
-    cd real-estate-listing-app
+    git clone https://github.com/Gravgor/wynajmi.to
+    cd frontend
     ```
 
 2. **Zainstaluj zależności:**
