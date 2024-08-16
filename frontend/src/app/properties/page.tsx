@@ -4,6 +4,7 @@ import { searchListings } from '@/actions';
 import { SearchForm } from '@/components/ui/SearchForm';
 import { Listing } from '@/types/Listing'; 
 import { ListingOffer } from '@/components/ui/ListingOffer';
+import { Loading } from '@/components/ui/Loading';
 
 export default function Page() {
   const [results, setResults] = useState<Listing[]>([]);
@@ -48,8 +49,10 @@ export default function Page() {
         <h2 className="text-2xl font-bold mb-6">
             {results.length} ofert znalezionych
         </h2>
-        {loading && <p>Ładowanie wyników...</p>}
+        <div className="flex justify-center items-center">
+        {loading && <Loading />}
         {error && <p className="text-red-500">{error}</p>}
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {results.length === 0 && !loading && !error && (
             <p>Brak wyników wyszukiwania.</p>
