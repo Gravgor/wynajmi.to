@@ -1,8 +1,8 @@
-# Real Estate Listing App
+# Wynajmi.to
 
 ## Opis projektu
 
-Real Estate Listing App to nowoczesna aplikacja do wyszukiwania mieszkań i nieruchomości. Umożliwia użytkownikom wyszukiwanie ofert według lokalizacji, typu nieruchomości i zakresu cenowego. Oferuje również szczegółowe informacje o nieruchomościach, w tym galerię zdjęć, opis, lokalizację na mapie oraz dane kontaktowe.
+Wynajmi.to to nowoczesna aplikacja do wyszukiwania mieszkań i nieruchomości. Umożliwia użytkownikom wyszukiwanie ofert według lokalizacji, typu nieruchomości i zakresu cenowego. Oferuje również szczegółowe informacje o nieruchomościach, w tym galerię zdjęć, opis, lokalizację na mapie oraz dane kontaktowe.
 
 ## Funkcjonalności
 
