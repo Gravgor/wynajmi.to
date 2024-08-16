@@ -8,9 +8,9 @@ import { SearchForm } from "@/components/ui/SearchForm";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col gap-8 items-center">
+    <main className="flex min-h-screen flex-col gap-2 items-center">
       <Hero />
-      <SearchForm onSearch={searchListings}/>
+      <SearchForm className="relative bottom-[80px]" onSearch={searchListings}/>
       <section id="why-us">
         <div className="mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-12">

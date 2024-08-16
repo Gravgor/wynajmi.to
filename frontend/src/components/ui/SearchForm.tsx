@@ -1,11 +1,16 @@
 "use client";
+import { cn } from '@/utils/cn';
 import { useState } from 'react';
 
 interface SearchFormProps {
+  className?: string;
   onSearch?: (query: { location: string; propertyType: string; priceRange: string }) => void;
 }
 
-export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
+export const SearchForm: React.FC<SearchFormProps> = ({ 
+  className,
+  onSearch
+ }) => {
   const [location, setLocation] = useState('');
   const [propertyType, setPropertyType] = useState('');
   const [priceRange, setPriceRange] = useState('');
@@ -17,7 +22,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className=" flex flex-col md:flex-row gap-6 bg-accent p-6 rounded-lg shadow-xl">
+    <form onSubmit={handleSubmit} className={cn(`${className} flex flex-col md:flex-row gap-6 bg-accent p-6 rounded-lg shadow-xl`)}>
       <div className="flex-1">
         <label htmlFor="location" className="block text-sm font-semibold mb-2 text-white">Lokalizacja</label>
         <input

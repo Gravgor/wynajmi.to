@@ -20,7 +20,12 @@ export const listings: Listing[] = [
     detailPageUrl: '/properties/offer/1',
     description: 'Stylowe mieszkanie w sercu miasta',
     longDescription: 'Przestronne mieszkanie w centrum Warszawy z widokiem na Pałac Kultury i Nauki. W pełni umeblowane i wyposażone w sprzęty AGD. W cenie najmu jest również miejsce postojowe w garażu podziemnym. Mieszkanie znajduje się na 5 piętrze.',
+    contactPerson: {
+      name: 'Jan Kowalski',
+      phoneNumber: '+48 123 456 789',
+      email: 'jankowalski@gmail.com',
   },
+},
   {
     id: 2,
     images: [
@@ -36,6 +41,11 @@ export const listings: Listing[] = [
     detailPageUrl: '/properties/offer//2',
     description: 'Komfortowe mieszkanie z widokiem na rynek',
     longDescription: 'Kawalerka w samym sercu Krakowa z widokiem na Rynek Główny. W pełni umeblowana i wyposażona w sprzęty AGD. W cenie najmu jest również miejsce postojowe w garażu podziemnym. Mieszkanie znajduje się na 3 piętrze.',
+    contactPerson: {
+      name: 'Jan Kowalski',
+      phoneNumber: '+48 123 456 789',
+      email: 'jankowalski@gmail.com'
+    }
   },
   {
     id: 3,
@@ -52,6 +62,11 @@ export const listings: Listing[] = [
     detailPageUrl: '/properties/offer//3',
     description: 'Nowoczesne mieszkanie blisko parku',
     longDescription: 'Przestronne mieszkanie w centrum Wrocławia z widokiem na Park Południowy. W pełni umeblowane i wyposażone w sprzęty AGD. W cenie najmu jest również miejsce postojowe w garażu podziemnym. Mieszkanie znajduje się na 2 piętrze.',
+    contactPerson: {
+      name: 'Anna Nowak',
+      phoneNumber: '+48 987 654 321',
+      email: 'annanowak@gmail.com'
+    }
   },
   {
     id: 4,
@@ -68,5 +83,10 @@ export const listings: Listing[] = [
     detailPageUrl: '/properties/offer/4',
     description: 'Przestronne mieszkanie z tarasem',
     longDescription: 'Przestronne mieszkanie w dzielnicy Wrzeszcz z widokiem na Zatokę Gdańską. W pełni umeblowane i wyposażone w sprzęty AGD. W cenie najmu jest również miejsce postojowe w garażu podziemnym. Mieszkanie znajduje się na 4 piętrze.',
+    contactPerson: {
+      name: 'Amelia Kowalczyk',
+      phoneNumber: '+48 123 456 789',
+      email: 'ameliakowalczyk@gmail.com'
   }
-];
+  },
+]
