@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { getListings, searchListings } from '@/actions';
 import { SearchForm } from '@/components/ui/SearchForm';
 import { Listing } from '@/types/Listing'; 
@@ -64,7 +64,9 @@ export default function Page() {
   return (
     <main className="container mx-auto px-4 py-8 h-[1100px]">
       <h1 className="text-3xl font-bold mb-8">Znajdź swoje wymarzone mieszkanie</h1>
+      <Suspense fallback={<Loading />}>
       <SearchForm onSearch={handleSearch} />
+      </Suspense>
 
       <section className="mt-12">
         <h2 className="text-2xl font-bold mb-6">
