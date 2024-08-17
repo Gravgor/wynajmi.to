@@ -52,7 +52,7 @@ export const ListingOffer: React.FC<Listing> = ({
             &#9654;
           </button>
           <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {images.map((_, index) => (
+            {images.slice(0,3).map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentImageIndex(index)}
