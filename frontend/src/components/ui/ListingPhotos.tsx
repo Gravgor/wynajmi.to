@@ -15,6 +15,7 @@ export const ListingPhotos: React.FC<{ images: string[], location: string }> = (
     return (
         <div className="flex gap-2 items-start justify-start">
             <Image
+                priority
                 key={1}
                 onClick={() => setOpen(true)}
                 src={mainImage}
@@ -27,6 +28,7 @@ export const ListingPhotos: React.FC<{ images: string[], location: string }> = (
             <div className="grid grid-cols-3 gap-4">
                 {otherImages.map((image, index) => (
                     <Image
+                       priority
                         key={index}
                         onClick={() => setOpen(true)}
                         src={image}

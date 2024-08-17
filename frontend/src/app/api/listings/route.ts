@@ -35,11 +35,24 @@ export async function GET(req: NextRequest): Promise<Response> {
 
 export async function POST(req: NextRequest): Promise<Response> {
   const body = await req.json();
-  const { title, description, location, price, area, rooms, amenities, propertyType, latitude, longitude, images, userId } = body;
-
+  const { title, description, location, price, area, rooms, amenities, propertyType, latitude, longitude, userId } = body;
   if (!userId) {
     return new Response("User ID is required", { status: 400 });
   }
+  const images = [
+    {
+      url: "https://properties-photos.s3.eu-north-1.amazonaws.com/uploads/1723911265883_offerphoto1.jpeg",
+    },
+    {
+      url: "https://properties-photos.s3.eu-north-1.amazonaws.com/uploads/1723911265883_offerphoto2.jpeg",
+    },
+    {
+      url: "https://properties-photos.s3.eu-north-1.amazonaws.com/uploads/1723911265883_offerphoto3.jpeg",
+    },
+    {
+      url: "https://properties-photos.s3.eu-north-1.amazonaws.com/uploads/1723911265883_offerphoto4.jpeg",
+    }
+  ]
 
   try {
     const listing = await prisma.listing.create({
@@ -54,11 +67,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         rooms,
         amenities,
         propertyType,
-        images: {
-          create: images.map((url: string) => ({
-            url,
-          })),
-        },
+        images: images.map((image: { url: string }) => image.url),
         user: {
           connect: {
             id: userId

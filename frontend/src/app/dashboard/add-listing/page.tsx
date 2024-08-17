@@ -145,6 +145,17 @@ export default function AddListing() {
     }
   };
 
+  const removeImages = async () => {
+    try {
+      await fetch('/api/listings/images/upload', {
+        method: 'DELETE',
+        body: JSON.stringify({ urls: imageUrls }),
+      });
+    } catch (error) {
+      console.error("Failed to remove images:", error);
+    }
+  }
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -209,6 +220,7 @@ export default function AddListing() {
   };
 
   const removeImage = (index: number) => {
+    removeImages();
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 

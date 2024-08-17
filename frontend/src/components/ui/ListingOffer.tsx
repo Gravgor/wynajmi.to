@@ -28,11 +28,12 @@ export const ListingOffer: React.FC<Listing> = ({
   };
 
   const hasImages = images.length > 0;
-  const placeholderImage = "/path/to/placeholder-image.jpg"; // Replace with the path to your placeholder image
+  const placeholderImage = "/path/to/placeholder-image.jpg"; 
+
+  const truncatedDescription = description.length > 300 ? `${description.slice(0, 300)}...` : description;
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden flex w-[730px] h-[340px]">
-      {/* Zdjęcia */}
       <div className="relative flex-1 flex flex-col items-center">
         <div className="relative w-full h-full">
           <Image
@@ -75,7 +76,7 @@ export const ListingOffer: React.FC<Listing> = ({
       {/* Informacje o mieszkaniu */}
       <div className="flex-1 flex flex-col p-4">
         <h2 className="text-xl font-semibold">{title}</h2>
-        <p className="text-sm text-gray-500">{description}</p>
+        <p className="text-sm text-gray-500">{truncatedDescription}</p>
         <div className="flex-1 flex flex-col justify-end">
           <div className="flex justify-center items-center">
             <span className="text-md text-[#1F2937] mb-3">
