@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import Image from "next/image";
-import './Calendar.css';
-import "react-datepicker/dist/react-datepicker.css";
 import { getListing } from "@/actions";
 import { Listing } from "@/types/Listing";
 import { Loading } from "@/components/ui/Loading";

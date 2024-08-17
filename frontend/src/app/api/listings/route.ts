@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+
+
 export async function GET(req: NextRequest): Promise<Response> {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
@@ -30,14 +32,14 @@ export async function GET(req: NextRequest): Promise<Response> {
   });
 }
 
+
 export async function POST(req: NextRequest): Promise<Response> {
   const body = await req.json();
-  const { title, description, location, price, area, rooms, amenities, propertyType, latitude, longitude, userId } = body;
+  const { title, description, location, price, area, rooms, amenities, propertyType, latitude, longitude, images, userId } = body;
 
   if (!userId) {
     return new Response("User ID is required", { status: 400 });
   }
-
 
   try {
     const listing = await prisma.listing.create({
@@ -52,6 +54,11 @@ export async function POST(req: NextRequest): Promise<Response> {
         rooms,
         amenities,
         propertyType,
+        images: {
+          create: images.map((url: string) => ({
+            url,
+          })),
+        },
         user: {
           connect: {
             id: userId

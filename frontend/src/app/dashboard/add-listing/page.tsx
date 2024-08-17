@@ -1,27 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import Autosuggest from 'react-autosuggest';
 import { useRouter, useSearchParams } from "next/navigation";
 import { createListing } from "@/actions";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import Calendar from "react-calendar";
+import TimePicker from "react-time-picker";
+import "react-datetime/css/react-datetime.css";
 
-type Coordinates = { lat: number; lng: number };
 type Suggestion = { title: string; placeId: string };
-
-
-const fetchSuggestions = async (inputValue: string): Promise<Suggestion[]> => {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${inputValue}&key=${apiKey}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.predictions.map((prediction: any) => ({
-        title: prediction.description,
-        placeId: prediction.place_id,
-    }));
-};
-
 
 const LocationMarker = ({
   setLocation,
@@ -55,21 +43,27 @@ export default function AddListing() {
   const [rooms, setRooms] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
-  const [image, setImage] = useState<File | null>(null);
+  const [images, setImages] = useState<File[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  
+
+  const [availableDates, setAvailableDates] = useState<
+    { date: Date; time: string }[]
+  >([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string>("");
 
   const amenitiesOptions = [
-    'WiFi',
-    'Air Conditioning',
-    'Heating',
-    'Parking',
-    'Pool',
-    'Gym',
-    'Pet Friendly',
-    'Washer/Dryer',
-];
+    "WiFi",
+    "Air Conditioning",
+    "Heating",
+    "Parking",
+    "Pool",
+    "Gym",
+    "Pet Friendly",
+    "Washer/Dryer",
+  ];
 
   const [userLocation, setUserLocation] = useState<{
     lat: number;
@@ -111,6 +105,11 @@ export default function AddListing() {
         propertyType,
         amenities: selectedAmenities,
         userId: searchParams.get("userId") || "",
+        availability: availableDates.map((slot) => ({
+          date: slot.date.toISOString().split("T")[0], 
+          time: slot.time,
+        })),
+        images: imageUrls, 
       };
 
       await createListing(listingData);
@@ -120,6 +119,29 @@ export default function AddListing() {
       setError("Failed to create listing");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const uploadImages = async () => {
+    if (images.length === 0) return;
+
+    const formData = new FormData();
+    images.forEach((image) => {
+      formData.append('images', image);
+    });
+
+    try {
+      const response = await fetch('/api/listings/images/upload', {
+        method: 'POST',
+        body: formData,
+        next: {
+          revalidate: 1,
+        }
+      });
+      const responseJson = await response.json();
+      setImageUrls((prevUrls) => [...prevUrls, responseJson.url]);
+    } catch (error) {
+      setError("Failed to upload images");
     }
   };
 
@@ -140,15 +162,55 @@ export default function AddListing() {
     }
   }, []);
 
+  useEffect(() => {
+    if (images.length > 0) {
+      uploadImages();
+    }
+    console.log(imageUrls);
+  }, [images]);
+
   const toggleAmenity = (amenity: string) => {
     setSelectedAmenities((prevSelected) =>
-        prevSelected.includes(amenity)
-            ? prevSelected.filter((item) => item !== amenity)
-            : [...prevSelected, amenity]
+      prevSelected.includes(amenity)
+        ? prevSelected.filter((item) => item !== amenity)
+        : [...prevSelected, amenity]
     );
-};
+  };
 
+  const handleDateChange = (date: any) => {
+    setSelectedDate(date as Date);
+  };
 
+  const handleTimeChange = (time: string | null) => {
+    setSelectedTime(time || "");
+  };
+
+  const addAvailableSlot = () => {
+    if (selectedDate && selectedTime) {
+      setAvailableDates((prevDates) => [
+        ...prevDates,
+        { date: selectedDate, time: selectedTime },
+      ]);
+      setSelectedDate(null);
+      setSelectedTime("");
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      setImages((prevImages) => [
+        ...prevImages,
+        ...Array.from(files),
+      ]);
+    } else {
+      setError("No images selected");
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gray-100 space-y-8">
@@ -160,28 +222,46 @@ export default function AddListing() {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-lg"
       >
-        {/* Sekcja przesyłania zdjęcia */}
         <div className="mb-6 flex flex-col items-center">
           <label
             htmlFor="image"
-            className="w-full cursor-pointer flex justify-center items-center h-48 bg-gray-200 border-2 border-dashed border-gray-400 rounded-lg relative overflow-hidden"
+            className="w-full cursor-pointer flex flex-col justify-center items-center h-48 bg-gray-200 border-2 border-dashed border-gray-400 rounded-lg relative overflow-hidden"
           >
             <input
               type="file"
               id="image"
-              onChange={(e) =>
-                setImage(e.target.files ? e.target.files[0] : null)
-              }
+              onChange={handleImageChange}
               className="absolute inset-0 opacity-0 cursor-pointer"
+              multiple
             />
             <span className="text-gray-500 text-lg font-semibold">+</span>
             <span className="absolute bottom-4 text-gray-500 text-sm">
               Dodaj zdjęcia
             </span>
           </label>
+          <p className="mt-2 text-gray-700">
+            {images.length} {images.length === 1 ? 'image' : 'images'} added
+          </p>
+          <div className="flex flex-wrap gap-2 mt-4">
+            {images.map((image, index) => (
+              <div key={index} className="relative">
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt={`Image ${index + 1}`}
+                  className="w-32 h-32 object-cover rounded-lg"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Sekcja mapy */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2">Location on Map</label>
           <div className="w-full h-64 relative">
@@ -190,7 +270,7 @@ export default function AddListing() {
                 userLocation
                   ? [userLocation.lat, userLocation.lng]
                   : [51.505, -0.09]
-              } 
+              }
               zoom={13}
               style={{ height: "100%", width: "100%" }}
               scrollWheelZoom={false}
@@ -207,7 +287,6 @@ export default function AddListing() {
           </div>
         </div>
 
-        {/* Sekcja podstawowych informacji */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block text-gray-700 mb-2" htmlFor="title">
@@ -300,7 +379,6 @@ export default function AddListing() {
           </div>
         </div>
 
-        {/* Sekcja opisu i udogodnień */}
         <div className="mb-6">
           <label className="block text-gray-700 mb-2" htmlFor="description">
             Description
@@ -316,19 +394,63 @@ export default function AddListing() {
         </div>
 
         <div className="mb-6">
-                    <label className="block text-gray-700 mb-2">Amenities</label>
-                    <div className="flex flex-wrap gap-2">
-                        {amenitiesOptions.map((amenity) => (
-                            <div
-                                key={amenity}
-                                className={`p-2 rounded-lg cursor-pointer ${selectedAmenities.includes(amenity) ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-                                onClick={() => toggleAmenity(amenity)}
-                            >
-                                {amenity}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+          <label className="block text-gray-700 mb-2">
+            Amenities
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {amenitiesOptions.map((amenity) => (
+              <div
+                key={amenity}
+                className={`p-2 rounded-lg cursor-pointer ${
+                  selectedAmenities.includes(amenity)
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+                onClick={() => toggleAmenity(amenity)}
+              >
+                {amenity}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-gray-700 mb-2">
+            Available Dates and Times
+          </label>
+          <div className="mb-4">
+            <Calendar
+              onChange={handleDateChange}
+              value={selectedDate}
+              className="react-calendar"
+            />
+          </div>
+          <div className="mb-4 w-full">
+            <TimePicker
+              onChange={handleTimeChange}
+              value={selectedTime}
+              format="HH:mm" 
+            />
+          </div>
+          <button
+            type="button"
+            onClick={addAvailableSlot}
+            className="bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition-colors duration-200"
+          >
+            Add Available Slot
+          </button>
+          <div className="mt-4">
+            {availableDates.length > 0 && (
+              <ul>
+                {availableDates.map((slot, index) => (
+                  <li key={index}>
+                    {slot.date.toDateString()} at {slot.time}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
 
         <button
           type="submit"
