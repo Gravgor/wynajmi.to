@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  username      String?
+  password      String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  sessions      Session[] 
+  listings      Listing[] 
+  savedListings SavedListing[] 
+  reservations  Reservation[] 
+  Account       Account[]
+}
+
+model Listing {
+  id            String         @id @default(cuid())
+  title         String
+  description   String
+  price         Float
+  location      String
+  propertyType  String
+  rooms         Int
+  area          Float
+  amenities     String[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User           @relation(fields: [userId], references: [id])
+  userId        String
+  reservations  Reservation[] 
+  savedListings SavedListing[] 
+}
+
+model Reservation {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  listingId  String
+  status     String 
+  reservedAt DateTime @default(now())
+}
+
+model SavedListing {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  listingId String
+  savedAt   DateTime @default(now())
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  expires      DateTime
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String   @unique
+  token      String   @unique
+  expires    DateTime
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  user              User    @relation(fields: [userId], references: [id])
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+}

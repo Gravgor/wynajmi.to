@@ -1,6 +1,7 @@
 'use server';
 
 import { Listing } from "./types/Listing";
+import { User } from "./types/user";
 
 export async function getListing(id: number): Promise<Listing> {
   const response = await fetch(`http://localhost:3000/api/listings?id=${id}`, {next: {revalidate: 100}});
@@ -25,3 +26,54 @@ export async function searchListings(query: { location: string; propertyType: st
   const listings = await response.json();
   return listings;
 }
+
+
+
+export async function authenticate(email: string, password: string): Promise<User> {
+  const response = await fetch('http://localhost:3000/api/authenticate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
+  if(!response.ok) {
+    throw new Error('An error occurred while authenticating');
+  }
+  const user = await response.json();
+  return user;
+}
+
+export async function getUser(id: string): Promise<User> {
+  const response = await fetch(`http://localhost:3000/api/users/${id}`);
+  if(!response.ok) {
+    throw new Error('An error occurred while fetching the user');
+  }
+  const user = await response.json();
+  return user;
+}
+
+export async function updateUser(id: string, data: Partial<User>): Promise<User> {
+  const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if(!response.ok) {
+    throw new Error('An error occurred while updating the user');
+  }
+  const user = await response.json();
+  return user;
+}
+
+export async function deleteUser(id: string): Promise<void> {
+  const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+    method: 'DELETE',
+  });
+  if(!response.ok) {
+    throw new Error('An error occurred while deleting the user');
+  }
+}
+
