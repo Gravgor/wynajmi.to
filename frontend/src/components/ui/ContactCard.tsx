@@ -1,12 +1,20 @@
+"use client";
 import { ContactPerson } from '@/types/Listing';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FaPhoneAlt, FaEnvelope, FaRegCalendarAlt } from 'react-icons/fa';
 
 export const ContactCard = ({
+    id,
     name,
     phoneNumber,
     email,
-} : ContactPerson) => {
+} : {
+    id: number,
+    name: string,
+    phoneNumber: string,
+    email: string,
+}) => {
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 h-[570px] w-full max-w-md mx-auto">
       <div className="flex flex-col items-center mb-6">
@@ -37,11 +45,11 @@ export const ContactCard = ({
         </div>
         <div className="flex items-center gap-4">
           <FaRegCalendarAlt className="text-gray-600 w-6 h-6" />
-          <div>
+          <div className='flex flex-col'>
             <h2 className="text-xl font-semibold text-gray-800">Oględziny mieszkania</h2>
-            <button className="mt-2 w-full bg-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-200">
+            <Link href={`/properties/offer/${id}/schedule-visit`} className="mt-2 w-full bg-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-200">
               Umów się na oględziny
-            </button>
+            </Link>
           </div>
         </div>
         <button className="w-full bg-accent text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition duration-200">

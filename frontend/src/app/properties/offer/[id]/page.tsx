@@ -57,6 +57,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
         <ContactCard
+          id={listing.id}
           name={listing.contactPerson.name}
           phoneNumber={listing.contactPerson.phoneNumber}
           email={listing.contactPerson.email}

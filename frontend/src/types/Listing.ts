@@ -18,6 +18,10 @@ export type ContactPerson = {
     description: string;
     longDescription?: string;
     contactPerson: ContactPerson;
+    availableDates: {
+      date: string;
+      times: string[];
+    }[];
   };
   
   export type Listings = Listing[];

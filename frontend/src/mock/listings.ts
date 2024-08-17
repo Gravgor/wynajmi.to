@@ -25,7 +25,17 @@ export const listings: Listing[] = [
       phoneNumber: '+48 123 456 789',
       email: 'jankowalski@gmail.com',
   },
-},
+  availableDates: [
+    {
+      date: '2024-08-22',
+      times: ['10:00', '12:00', '14:00', '16:00']
+    },
+    {
+      date: '2024-08-23',
+      times: ['10:00', '12:00', '14:00', '16:00']
+    },
+    ]
+  },
   {
     id: 2,
     images: [
@@ -45,7 +55,17 @@ export const listings: Listing[] = [
       name: 'Jan Kowalski',
       phoneNumber: '+48 123 456 789',
       email: 'jankowalski@gmail.com'
-    }
+    },
+    availableDates: [
+      {
+        date: '2024-08-22',
+        times: ['10:00', '12:00', '14:00', '16:00']
+      },
+      {
+        date: '2024-08-23',
+        times: ['10:00', '12:00', '14:00', '16:00']
+      },
+    ]
   },
   {
     id: 3,
@@ -66,7 +86,17 @@ export const listings: Listing[] = [
       name: 'Anna Nowak',
       phoneNumber: '+48 987 654 321',
       email: 'annanowak@gmail.com'
-    }
+    },
+    availableDates: [
+      {
+        date: '2024-08-22',
+        times: ['10:00', '12:00', '14:00', '16:00']
+      },
+      {
+        date: '2024-08-23',
+        times: ['10:00', '12:00', '14:00', '16:00']
+      },
+    ]
   },
   {
     id: 4,
@@ -87,6 +117,16 @@ export const listings: Listing[] = [
       name: 'Amelia Kowalczyk',
       phoneNumber: '+48 123 456 789',
       email: 'ameliakowalczyk@gmail.com'
-  }
+  },
+  availableDates: [
+    {
+      date: '2024-08-22',
+      times: ['10:00', '12:00', '14:00', '16:00']
+    },
+    {
+      date: '2024-08-23',
+      times: ['10:00', '12:00', '14:00', '16:00']
+    },
+    ]
   },
 ]
