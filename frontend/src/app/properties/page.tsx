@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { searchListings } from '@/actions';
+import { getListings, searchListings } from '@/actions';
 import { SearchForm } from '@/components/ui/SearchForm';
 import { Listing } from '@/types/Listing'; 
 import { ListingOffer } from '@/components/ui/ListingOffer';
@@ -16,11 +16,14 @@ export default function Page() {
 
   useEffect(() => {
     const fetchInitialListings = async () => {
-      if(searchParams.has('location') || searchParams.has('propertyType') || searchParams.has('priceRange')) {
+      if(searchParams.has('location') || searchParams.has('propertyType') || searchParams.has('priceRange') || searchParams.has('rooms') || searchParams.has('area') || searchParams.has('amenities')) {
         const query = {
           location: searchParams.get('location') || '',
           propertyType: searchParams.get('propertyType') || '',
-          priceRange: searchParams.get('priceRange') || ''
+          priceRange: searchParams.get('priceRange') || '',
+          rooms: searchParams.get('rooms') || '0',
+          area: searchParams.get('area') || '',
+          amenities: searchParams.getAll('amenities') || [],
         }
         try {
           const data = await searchListings(query);
@@ -30,22 +33,21 @@ export default function Page() {
         } finally {
           setLoading(false);
         }
-        return;
-      }
-      try {
-        const data = await searchListings({ location: '', propertyType: '', priceRange: '' });
-        setResults(data);
-      } catch (err) {
-        setError('Wystąpił błąd podczas pobierania ofert. Spróbuj ponownie.');
-      } finally {
-        setLoading(false);
-      }
+      } 
+        try {
+          const data = await getListings();
+          setResults(data);
+        } catch (err) {
+          setError('Wystąpił błąd podczas pobierania ofert. Spróbuj ponownie.');
+        } finally {
+          setLoading(false);
+        }
     };
 
     fetchInitialListings();
   }, []);
 
-  const handleSearch = async (query: { location: string; propertyType: string; priceRange: string }) => {
+  const handleSearch = async (query: { location: string; propertyType: string; priceRange: string, rooms: string, area: string, amenities: string[]}) => {
     setLoading(true);
     setError(null);
 

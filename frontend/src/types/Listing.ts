@@ -12,6 +12,9 @@ export type ContactPerson = {
     location: string;
     price: string;
     propertyType: string;
+    rooms: string;
+    area: string;
+    amenities: string[];
     bedrooms: number;
     size: string;
     detailPageUrl: string;
