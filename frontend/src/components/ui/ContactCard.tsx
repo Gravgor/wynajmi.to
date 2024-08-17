@@ -1,20 +1,22 @@
 "use client";
-import { ContactPerson } from '@/types/Listing';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaPhoneAlt, FaEnvelope, FaRegCalendarAlt } from 'react-icons/fa';
+
+type ContactCardProps = {
+  id: string;
+  name: string;
+  phoneNumber?: string;
+  email: string;
+}
+
 
 export const ContactCard = ({
     id,
     name,
     phoneNumber,
     email,
-} : {
-    id: number,
-    name: string,
-    phoneNumber: string,
-    email: string,
-}) => {
+} : ContactCardProps) => {
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 h-[570px] w-full max-w-md mx-auto">
       <div className="flex flex-col items-center mb-6">

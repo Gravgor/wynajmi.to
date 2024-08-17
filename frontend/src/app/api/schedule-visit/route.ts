@@ -4,7 +4,6 @@ import { NextRequest } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    console.log('Oględziny zaplanowane dla:', data);
 
     return new Response(JSON.stringify({ message: 'Oględziny zostały zaplanowane!' }), {
       status: 200,

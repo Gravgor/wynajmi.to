@@ -6,25 +6,33 @@ export type ContactPerson = {
     email: string;
   };
   
+
   export type Listing = {
-    id: number;
-    images: string[];
-    location: string;
-    price: string;
-    propertyType: string;
-    rooms: string;
-    area: string;
-    amenities: string[];
-    bedrooms: number;
-    size: string;
-    detailPageUrl: string;
+    id: string;
+    title: string;
     description: string;
-    longDescription?: string;
-    contactPerson: ContactPerson;
+    longDescription: string;
+    price: number;
+    location: string;
+    longitude: number;
+    latitude: number;
+    propertyType: string;
+    rooms: number;
+    bedrooms: number;
+    area: number;
+    amenities: string[];
+    images: string[];
+    user: {
+      id: string;
+      name: string;
+      email: string;
+    };
     availableDates: {
       date: string;
       times: string[];
     }[];
-  };
+    detailPageUrl: string;
+    userId?: string;
+  }
   
   export type Listings = Listing[];

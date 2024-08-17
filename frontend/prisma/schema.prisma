@@ -10,6 +10,8 @@ datasource db {
 model User {
   id            String         @id @default(cuid())
   email         String         @unique
+  firstName     String?
+  lastName      String?
   username      String?
   password      String
   createdAt     DateTime       @default(now())
@@ -28,6 +30,8 @@ model Listing {
   price         Float
   location      String
   propertyType  String
+  longitude     Float        @default(0.0)
+  latitude      Float        @default(0.0)
   rooms         Int
   area          Float
   amenities     String[]
@@ -36,7 +40,16 @@ model Listing {
   user          User           @relation(fields: [userId], references: [id])
   userId        String
   reservations  Reservation[] 
+  availability  Availability[]
   savedListings SavedListing[] 
+}
+
+model Availability {
+  id         String   @id @default(cuid())
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  listingId  String
+  date  DateTime
+  time  String
 }
 
 model Reservation {

@@ -1,17 +1,17 @@
-'use client'
+'use client';
 import { Listing } from "@/types/Listing";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 export const ListingOffer: React.FC<Listing> = ({
-  images,
-  location,
-  price,
-  size,
-  detailPageUrl,
+  title,
   description,
-  longDescription
+  longDescription,
+  price,
+  area,
+  images = [], // Default to an empty array if images is undefined
+  detailPageUrl
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -27,61 +27,71 @@ export const ListingOffer: React.FC<Listing> = ({
     );
   };
 
+  const hasImages = images.length > 0;
+  const placeholderImage = "/path/to/placeholder-image.jpg"; // Replace with the path to your placeholder image
+
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden flex w-[730px] h-[340px]">
       {/* Zdjęcia */}
       <div className="relative flex-1 flex flex-col items-center">
         <div className="relative w-full h-full">
           <Image
-            src={images[currentImageIndex]}
+            src={hasImages ? images[currentImageIndex] : placeholderImage}
             alt={description}
             layout="fill"
             objectFit="cover"
             className="rounded-t-lg"
           />
-          <button
-            onClick={handlePrevClick}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10"
-          >
-            &#9664;
-          </button>
-          <button
-            onClick={handleNextClick}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10"
-          >
-            &#9654;
-          </button>
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {images.slice(0,3).map((_, index) => (
+          {hasImages && (
+            <>
               <button
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                className={`w-3 h-3 rounded-full ${
-                  currentImageIndex === index ? 'bg-[#F59E0B]' : 'bg-gray-300'
-                }`}
-              />
-            ))}
-          </div>
+                onClick={handlePrevClick}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10"
+              >
+                &#9664;
+              </button>
+              <button
+                onClick={handleNextClick}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10"
+              >
+                &#9654;
+              </button>
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                {images.slice(0, 3).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-3 h-3 rounded-full ${
+                      currentImageIndex === index ? 'bg-[#F59E0B]' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* Informacje o mieszkaniu */}
       <div className="flex-1 flex flex-col p-4">
-        <h2 className="text-xl font-semibold">{location}</h2>
+        <h2 className="text-xl font-semibold">{title}</h2>
         <p className="text-sm text-gray-500">{description}</p>
         <div className="flex-1 flex flex-col justify-end">
-            <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center">
             <span className="text-md text-[#1F2937] mb-3">
-                {longDescription}
+              {longDescription}
             </span>
-            </div>
-          <div className="flex justify-between items-center">
-            <p className="text-lg font-semibold">{price}</p>
-            <p className="text-sm text-gray-500">{size} m²</p>
           </div>
-            <Link className="mt-4 bg-[#F59E0B] text-white text-center py-2 rounded-md shadow-md hover:bg-[#D97706] transition" href={detailPageUrl}>
-                Zobacz ofertę
-            </Link>
+          <div className="flex justify-between items-center">
+            <p className="text-lg font-semibold">{price.toLocaleString('pl')} PLN/mies</p>
+            <p className="text-sm text-gray-500">{area} m²</p>
+          </div>
+          <Link
+            className="mt-4 bg-[#F59E0B] text-white text-center py-2 rounded-md shadow-md hover:bg-[#D97706] transition"
+            href={detailPageUrl}
+          >
+            Zobacz ofertę
+          </Link>
         </div>
       </div>
     </div>

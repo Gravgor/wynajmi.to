@@ -1,6 +1,5 @@
-import { Listing } from "@/types/Listing";
 
-export const listings: Listing[] = [
+export const listings = [
   {
     id: 1,
     images: [

@@ -20,7 +20,7 @@ export default function ScheduleVisitPage({
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   const fetchListing = async () => {
-    const listing = await getListing(Number(params.id));
+    const listing = await getListing(params.id);
     setListing(listing);
   };
 
@@ -98,7 +98,8 @@ export default function ScheduleVisitPage({
           </div>
 
           <div className="flex-1">
-            <Image
+            {listing.images && (
+              <Image
               src={listing.images[0]}
               alt={listing.description}
               width={600}
@@ -106,6 +107,7 @@ export default function ScheduleVisitPage({
               objectFit="cover"
               className="rounded-lg"
             />
+            )}
           </div>
         </div>
       ) : (

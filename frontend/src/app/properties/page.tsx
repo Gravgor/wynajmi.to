@@ -81,7 +81,7 @@ export default function Page() {
             <p>Brak wyników wyszukiwania.</p>
           )}
           {results.map((listing) => (
-            <ListingOffer key={listing.id} {...listing} />
+            <ListingOffer key={listing.id} {...listing} detailPageUrl={`/properties/offer/${listing.id}`}/>
           ))}
         </div>
       </section>

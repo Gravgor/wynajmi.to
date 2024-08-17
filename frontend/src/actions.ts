@@ -1,9 +1,11 @@
 'use server';
 
+import { getServerSession } from "next-auth";
 import { Listing } from "./types/Listing";
 import { User } from "./types/user";
+import { buildSearchUrl } from "./lib/utils/actions/buildSearchQuery";
 
-export async function getListing(id: number): Promise<Listing> {
+export async function getListing(id: string): Promise<Listing> {
   const response = await fetch(`http://localhost:3000/api/listings?id=${id}`, {next: {revalidate: 100}});
     if(!response.ok) {
         throw new Error('An error occurred while fetching the listing');
@@ -18,13 +20,45 @@ export async function getListings(): Promise<Listing[]> {
   return listings;
 }
 
-export async function searchListings(query: { location: string; propertyType: string; priceRange: string; rooms: string; area: string; amenities: string[]}): Promise<Listing[]> {
-  const response = await fetch(`http://localhost:3000/api/listings/search?location=${query.location}&propertyType=${query.propertyType}&priceRange=${query.priceRange}&rooms=${query.rooms}&area=${query.area}`);
-  if(!response.ok) {
+export async function searchListings(query: {
+  location?: string;
+  propertyType?: string;
+  priceRange?: string;
+  rooms?: string;
+  area?: string;
+  amenities?: string[];
+}): Promise<Listing[]> {
+  const url = buildSearchUrl(query);
+  
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  
+  if (!response.ok) {
     throw new Error('An error occurred while searching for listings');
   }
+  
   const listings = await response.json();
   return listings;
+}
+
+export async function createListing(data: Partial<Listing>): Promise<Listing> {
+  const session = await getServerSession();
+  if(!session) {
+    throw new Error('You must be authenticated to create a listing');
+  }
+  const response = await fetch('http://localhost:3000/api/listings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  const listing = await response.json();
+  return listing;
 }
 
 
