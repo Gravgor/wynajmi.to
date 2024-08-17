@@ -80,7 +80,7 @@ export default function Page() {
           {results.length === 0 && !loading && !error && (
             <p>Brak wyników wyszukiwania.</p>
           )}
-          {results.map((listing) => (
+          {!loading && results.map((listing) => (
             <ListingOffer key={listing.id} {...listing} detailPageUrl={`/properties/offer/${listing.id}`}/>
           ))}
         </div>
