@@ -1,5 +1,6 @@
 "use client";
 import { cn } from '@/utils/cn';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface SearchFormProps {
@@ -15,8 +16,15 @@ export const SearchForm: React.FC<SearchFormProps> = ({
   const [propertyType, setPropertyType] = useState('');
   const [priceRange, setPriceRange] = useState('');
 
+  const pathname = usePathname();
+
+  const router = useRouter();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if(pathname === '/') {
+      router.push(`/properties?location=${location}&propertyType=${propertyType}&priceRange=${priceRange}`);
+    }
     if (!onSearch) return;
     onSearch({ location, propertyType, priceRange });
   };

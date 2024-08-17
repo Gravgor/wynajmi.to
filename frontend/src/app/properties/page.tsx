@@ -5,14 +5,33 @@ import { SearchForm } from '@/components/ui/SearchForm';
 import { Listing } from '@/types/Listing'; 
 import { ListingOffer } from '@/components/ui/ListingOffer';
 import { Loading } from '@/components/ui/Loading';
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
   const [results, setResults] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     const fetchInitialListings = async () => {
+      if(searchParams.has('location') || searchParams.has('propertyType') || searchParams.has('priceRange')) {
+        const query = {
+          location: searchParams.get('location') || '',
+          propertyType: searchParams.get('propertyType') || '',
+          priceRange: searchParams.get('priceRange') || ''
+        }
+        try {
+          const data = await searchListings(query);
+          setResults(data);
+        } catch (err) {
+          setError('Wystąpił błąd podczas pobierania ofert. Spróbuj ponownie.');
+        } finally {
+          setLoading(false);
+        }
+        return;
+      }
       try {
         const data = await searchListings({ location: '', propertyType: '', priceRange: '' });
         setResults(data);
