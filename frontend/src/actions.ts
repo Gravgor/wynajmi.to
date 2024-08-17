@@ -1,12 +1,16 @@
 'use server';
 
+
 import { getServerSession } from "next-auth";
 import { Listing } from "./types/Listing";
 import { User } from "./types/user";
 import { buildSearchUrl } from "./lib/utils/actions/buildSearchQuery";
 
+
+const apiBaseUrl = process.env.ENV === 'vercel' ? 'https://wynajmi-to.vercel.app/api' : 'http://localhost:3000/api';
+
 export async function getListing(id: string): Promise<Listing> {
-  const response = await fetch(`http://localhost:3000/api/listings?id=${id}`, {next: {revalidate: 100}});
+  const response = await fetch(`${apiBaseUrl}/listings?id=${id}`, {next: {revalidate: 100}});
     if(!response.ok) {
         throw new Error('An error occurred while fetching the listing');
     }
@@ -15,7 +19,7 @@ export async function getListing(id: string): Promise<Listing> {
 }
 
 export async function getListings(): Promise<Listing[]> {
-  const response = await fetch('http://localhost:3000/api/listings');
+  const response = await fetch(`${apiBaseUrl}/listings`);
   const listings = await response.json();
   return listings;
 }
@@ -50,7 +54,7 @@ export async function createListing(data: Partial<Listing>): Promise<Listing> {
   if(!session) {
     throw new Error('You must be authenticated to create a listing');
   }
-  const response = await fetch('http://localhost:3000/api/listings', {
+  const response = await fetch(`${apiBaseUrl}/listings`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -64,7 +68,7 @@ export async function createListing(data: Partial<Listing>): Promise<Listing> {
 
 
 export async function authenticate(email: string, password: string): Promise<User> {
-  const response = await fetch('http://localhost:3000/api/authenticate', {
+  const response = await fetch(`${apiBaseUrl}/api/authenticate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -79,7 +83,7 @@ export async function authenticate(email: string, password: string): Promise<Use
 }
 
 export async function getUser(id: string): Promise<User> {
-  const response = await fetch(`http://localhost:3000/api/users/${id}`);
+  const response = await fetch(`${apiBaseUrl}/users/${id}`);
   if(!response.ok) {
     throw new Error('An error occurred while fetching the user');
   }
@@ -88,7 +92,7 @@ export async function getUser(id: string): Promise<User> {
 }
 
 export async function updateUser(id: string, data: Partial<User>): Promise<User> {
-  const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+  const response = await fetch(`${apiBaseUrl}/api/users/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -103,7 +107,7 @@ export async function updateUser(id: string, data: Partial<User>): Promise<User>
 }
 
 export async function deleteUser(id: string): Promise<void> {
-  const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+  const response = await fetch(`${apiBaseUrl}/api/users/${id}`, {
     method: 'DELETE',
   });
   if(!response.ok) {
