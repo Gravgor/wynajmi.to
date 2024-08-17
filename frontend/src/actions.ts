@@ -18,7 +18,7 @@ export async function getListings(): Promise<Listing[]> {
 }
 
 export async function searchListings(query: { location: string; propertyType: string; priceRange: string; rooms: string; area: string; amenities: string[]}): Promise<Listing[]> {
-  const response = await fetch(`http://localhost:3000/api/listings/search?location=${query.location}&propertyType=${query.propertyType}&priceRange=${query.priceRange}&rooms=${query.rooms}&area=${query.area}&amenities=${query.amenities}`);
+  const response = await fetch(`http://localhost:3000/api/listings/search?location=${query.location}&propertyType=${query.propertyType}&priceRange=${query.priceRange}&rooms=${query.rooms}&area=${query.area}`);
   if(!response.ok) {
     throw new Error('An error occurred while searching for listings');
   }
