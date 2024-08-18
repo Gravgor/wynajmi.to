@@ -1,4 +1,5 @@
-import { searchListings } from "@/actions";
+
+import { searchListings } from "@/actions/listings/listingActions";
 import CallToAction from "@/components/CallToAction";
 import FeaturedListing from "@/components/FeaturedListing";
 import Footer from "@/components/Footer";
