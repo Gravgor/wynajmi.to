@@ -36,7 +36,7 @@ export const ListingOffer: React.FC<Listing> = ({
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row max-w-full">
       <div className="relative flex-1">
-        <div className="relative w-full h-64 md:h-[340px]">
+        <div className="relative w-full h-64 md:h-full">
           <Image
             src={hasImages ? images[currentImageIndex] : placeholderImage}
             alt={description}
