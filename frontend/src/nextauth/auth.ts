@@ -2,7 +2,7 @@ import { getServerSession, type NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
 import { Redis } from "@upstash/redis";
-import { authenticate } from "@/actions";
+import { authenticate } from "@/actions/users/userActions";
 import { User } from "@/types/user"; 
 
 export const authOptions: NextAuthOptions = {

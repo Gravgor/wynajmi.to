@@ -9,20 +9,7 @@ import { buildSearchUrl } from "./lib/utils/actions/buildSearchQuery";
 
 const apiBaseUrl = process.env.ENV === 'vercel' ? 'https://wynajmi-to.vercel.app/api' : 'http://localhost:3000/api';
 
-export async function getListing(id: string): Promise<Listing> {
-  const response = await fetch(`${apiBaseUrl}/listings?id=${id}`, {next: {revalidate: 100}});
-    if(!response.ok) {
-        throw new Error('An error occurred while fetching the listing');
-    }
-  const listing = await response.json();
-  return listing;
-}
 
-export async function getListings(): Promise<Listing[]> {
-  const response = await fetch(`${apiBaseUrl}/listings`);
-  const listings = await response.json();
-  return listings;
-}
 
 export async function searchListings(query: {
   location?: string;
@@ -32,8 +19,7 @@ export async function searchListings(query: {
   area?: string;
   amenities?: string[];
 }): Promise<Listing[]> {
-  const url = buildSearchUrl(query);
-  console.log(url);
+  const url = buildSearchUrl(query);;
   
   const response = await fetch(url, {
     method: 'GET',

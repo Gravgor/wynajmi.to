@@ -1,13 +1,14 @@
-import { getListing } from "@/actions";
+
 import { IoIosBed } from "react-icons/io";
 import { BsHouseFill } from "react-icons/bs";
 import { MapComponent } from "@/components/ui/Map";
 import { ListingPhotos } from "@/components/ui/ListingPhotos";
 import { ContactCard } from "@/components/ui/ContactCard";
+import { getListings } from "@/actions/listings/listingActions";
+import { Listing } from "@/types/Listing";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const listing = await getListing(params.id);
-
+  const [listing]: Listing[] = await getListings(params.id);
   const propertyTypeText = (() => {
     switch (listing.propertyType) {
       case '1-bedroom':

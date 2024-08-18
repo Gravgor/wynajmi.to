@@ -109,7 +109,9 @@ export default function AddListing() {
         amenities: selectedAmenities,
         userId: searchParams.get("userId") || "",
         availability: availableDates.map((slot) => ({
-          date: slot.date.toISOString().split("T")[0], 
+          id: "",
+          listingId: "",
+          date: slot.date,
           time: slot.time,
         })),
         images: imageUrls, 
@@ -130,7 +132,7 @@ export default function AddListing() {
     formData.append('image', image);
 
     try {
-      const response = await fetch('/api/listings/images/upload', {
+      const response = await fetch('/api/images/upload', {
         method: 'POST',
         body: formData,
       });

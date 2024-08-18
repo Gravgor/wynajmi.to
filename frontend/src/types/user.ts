@@ -1,6 +1,19 @@
 export interface User {
-    id: string;
-    username: string;
-    email?: string;
-  }
-  
+
+  id: string;
+
+  email: string;
+
+  firstName: string | null;
+
+  lastName: string | null;
+
+  username: string | null;
+
+  password: string;
+
+  createdAt: Date;
+
+  updatedAt: Date;
+
+}

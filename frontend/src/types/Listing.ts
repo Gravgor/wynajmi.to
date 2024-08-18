@@ -1,5 +1,8 @@
 // types/Listing.ts
 
+import { Availability, SavedListing } from "@prisma/client";
+import { User } from "./user";
+
 export type ContactPerson = {
     name: string;
     phoneNumber: string;
@@ -7,33 +10,39 @@ export type ContactPerson = {
   };
   
 
-  export type Listing = {
+  type Reservation = {
+    id: string;
+    user: User;
+    listing: Listing;
+    listingId: string;
+    checkIn: Date;
+    checkOut: Date;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+
+
+
+  export interface Listing {
     id: string;
     title: string;
+    images: string[];
     description: string;
-    longDescription: string;
     price: number;
     location: string;
+    propertyType: string;
     longitude: number;
     latitude: number;
-    propertyType: string;
     rooms: number;
-    bedrooms: number;
     area: number;
     amenities: string[];
-    images: string[];
-    user: {
-      id: string;
-      firstName: string;
-      lastName: string;
-      email: string;
-    };
-    availableDates: {
-      date: string;
-      times: string[];
-    }[];
+    createdAt: Date;
+    updatedAt: Date;
+    user: User;
+    userId: string;
+    reservations: Reservation[];
+    availability: Availability[];
+    savedListings: SavedListing[];
     detailPageUrl: string;
-    userId?: string;
   }
   
-  export type Listings = Listing[];
