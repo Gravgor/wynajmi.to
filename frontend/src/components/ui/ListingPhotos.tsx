@@ -9,7 +9,7 @@ import NextJsImage from "../NextjsImage";
 export const ListingPhotos: React.FC<{ images: string[], location: string }> = ({ images, location }) => {
     const [open, setOpen] = useState(false);
     const mainImage = images[0];
-    const otherImages = images.slice(1, 6); // Get only the next 5 images
+    const otherImages = images.slice(1, 3); // Get only the next 5 images
     const remainingImagesCount = images.length - 6;
 
     return (
@@ -53,7 +53,7 @@ export const ListingPhotos: React.FC<{ images: string[], location: string }> = (
                             className="rounded-lg"
                         />
                         <div className="absolute inset-0 bg-black opacity-50 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-lg font-semibold">Zobacz więcej</span>
+                            <span className="text-white text-lg font-semibold">Zobacz więcej ({remainingImagesCount}+)</span>
                         </div>
                     </div>
                 )}

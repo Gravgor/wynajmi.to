@@ -95,7 +95,7 @@ export const ListingOffer: React.FC<Listing> = ({
             <p className="text-sm text-gray-500">{area} m²</p>
           </div>
           <Link
-            className="mt-4 bg-[#F59E0B] text-white text-center py-2 px-4 rounded-md shadow-md hover:bg-[#D97706] transition"
+            className="mt-4 bg-orange-500 text-white text-center py-2 px-4 rounded-md shadow-md hover:bg-[#D97706] transition"
             href={detailPageUrl}
           >
             Zobacz ofertę

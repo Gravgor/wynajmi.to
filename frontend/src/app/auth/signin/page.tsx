@@ -67,7 +67,7 @@ export default function SignIn() {
           </div>
           <button
             type="submit"
-            className="w-full bg-accent text-white font-semibold py-2 rounded hover:bg-blue-700 transition duration-300"
+            className="w-full bg-orange-500 text-white font-semibold py-2 rounded hover:bg-blue-700 transition duration-300"
           >
             Zaloguj się
           </button>

@@ -23,7 +23,7 @@ export const ContactCard = ({
           src="/images/placeholders/testimonial/jan.jpg" // Zaktualizuj ścieżkę do zdjęcia
           alt="Zdjęcie kontaktowe"
           width={120}
-          height={120}
+          height={64}
           objectFit="cover"
           className="rounded-full shadow-md border-4 border-primary"
         />
@@ -53,7 +53,7 @@ export const ContactCard = ({
             </Link>
           </div>
         </div>
-        <Link href={`mailto:${email}`} className="block w-full bg-accent text-white py-2 px-4 rounded-lg shadow-md hover:bg-accent-dark transition duration-200 text-center">
+        <Link href={`mailto:${email}`} className="block w-full bg-orange-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-orange-500-dark transition duration-200 text-center">
           Napisz wiadomość
         </Link>
       </div>

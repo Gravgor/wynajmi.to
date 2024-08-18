@@ -11,7 +11,7 @@ export const QuickActions = ({
         <div className="flex justify-end space-x-4">
         <Link 
           href={`/dashboard/add-listing?userId=${userId}`}
-          className="bg-accent text-white py-2 px-4 rounded-lg shadow-md hover:bg-accent-dark transition-colors duration-200"
+          className="bg-orange-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-orange-500-dark transition-colors duration-200"
         >
           Add New Listing
         </Link>

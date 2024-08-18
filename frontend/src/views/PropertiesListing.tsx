@@ -7,10 +7,31 @@ import { ListingOffer } from "@/components/ui/ListingOffer";
 import { Loading } from "@/components/ui/Loading";
 import { useSearchParams } from "next/navigation";
 
+const filterOptions = {
+  propertyTypes: ['Mieszkanie', 'Dom', 'Studio'],
+  priceRanges: ['Do 1000 PLN', '1000-2000 PLN', '2000-3000 PLN', 'Powyżej 3000 PLN'],
+  amenities: ['Wi-Fi', 'Telewizor', 'Kuchnia', 'Pralka']
+};
+
+const sortingOptions = [
+  { label: 'Cena: Od najniższej', value: 'price-asc' },
+  { label: 'Cena: Od najwyższej', value: 'price-desc' }
+];
+
 export default function PropertiesListing() {
   const [results, setResults] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filters, setFilters] = useState({
+    location: "",
+    propertyType: "",
+    priceRange: "",
+    rooms: "",
+    area: "",
+    amenities: [] as string[],
+    sort: "price-asc" // Default sorting option
+  });
+  const [isSortOpen, setIsSortOpen] = useState(true); // State to control sorting panel visibility
 
   const searchParams = useSearchParams();
 
@@ -61,6 +82,7 @@ export default function PropertiesListing() {
     rooms: string;
     area: string;
     amenities: string[];
+    sort: string; // Include sort in the query
   }) => {
     setLoading(true);
     setError(null);
@@ -75,13 +97,40 @@ export default function PropertiesListing() {
     }
   };
 
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [name]: value
+    }));
+  };
+
+  const handleAmenityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      amenities: checked
+        ? [...prevFilters.amenities, value]
+        : prevFilters.amenities.filter(item => item !== value)
+    }));
+  };
+
+  const applyFilters = () => {
+    handleSearch(filters);
+  };
+
+ 
+  const toggleSortPanel = () => {
+    setIsSortOpen(prevState => !prevState);
+  };
+
   return (
-    <main className="container mx-auto px-4 py-8 h-screen">
+    <main className="container mx-auto px-4 py-6 md:py-8">
       <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">
         Znajdź swoje wymarzone mieszkanie
       </h1>
       <Suspense fallback={<Loading />}>
-        <SearchForm onSearch={handleSearch} />
+          <SearchForm onSearch={handleSearch} />
       </Suspense>
 
       <section className="mt-8 md:mt-12">
@@ -92,9 +141,9 @@ export default function PropertiesListing() {
           {loading && <Loading />}
           {error && <p className="text-red-500 text-sm md:text-base">{error}</p>}
         </div>
-        <div className="grid grid-cols-2 gap-4 p-2 md:p-4">
+        <div className="grid grid-cols-2 gap-4">
           {results.length === 0 && !loading && !error && (
-            <p className="col-span-1 text-center">Brak wyników wyszukiwania.</p>
+            <p className="col-span-1 ">Brak wyników wyszukiwania.</p>
           )}
           {!loading &&
             results.map((listing) => (
