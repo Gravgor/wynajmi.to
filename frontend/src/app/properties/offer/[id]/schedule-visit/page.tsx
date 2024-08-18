@@ -2,23 +2,24 @@
 import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import Image from "next/image";
-import { getListing } from "@/actions";
 import { Listing } from "@/types/Listing";
 import { Loading } from "@/components/ui/Loading";
 import { ScheduleVisitForm } from "@/components/ui/ScheduleVisitForm";
+import { getListings } from "@/actions/listings/listingActions";
 
+/*
 export default function ScheduleVisitPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const [listing, setListing] = useState<Listing | null>(null);
+  const [listing, setListing] = useState<Listing[] | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   const fetchListing = async () => {
-    const listing = await getListing(params.id);
+    const listing = await getListings(params.id);
     setListing(listing);
   };
 
@@ -29,9 +30,10 @@ export default function ScheduleVisitPage({
   const handleDateChange = (date: any) => {
     setSelectedDate(date as Date);
     const dateString = (date as Date)?.toISOString().split("T")[0];
-    const times =
-      listing?.availableDates.find((d) => d.date === dateString)?.times || [];
-    setAvailableTimes(times);
+    // @ts-ignore
+    const times: string[] =
+      listing?.availability.find((d) => new Date(d.date) === new Date(dateString))?.time ?? [];
+    setAvailableTimes([...times]);
     setSelectedTime(null);
   };
 
@@ -152,3 +154,4 @@ export default function ScheduleVisitPage({
     </main>
   );
 }
+*/
