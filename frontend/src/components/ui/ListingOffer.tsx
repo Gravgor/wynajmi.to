@@ -7,7 +7,6 @@ import { useState } from "react";
 export const ListingOffer: React.FC<Listing> = ({
   title,
   description,
-  longDescription,
   price,
   area,
   images = [], // Default to an empty array if images is undefined
@@ -88,7 +87,6 @@ export const ListingOffer: React.FC<Listing> = ({
         <p className="text-sm text-gray-600 mb-4">{truncatedDescription}</p>
         <div className="flex-1 flex flex-col justify-end">
           <div className="flex flex-col items-start mb-4">
-            <span className="text-md text-gray-700">{longDescription}</span>
           </div>
           <div className="flex justify-between items-center mb-4">
             <p className="text-lg font-semibold text-gray-900">{price.toLocaleString('pl')} PLN/mies</p>

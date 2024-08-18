@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
-import { getListings, searchListings } from "@/actions";
+import { getListings, searchListings } from "@/actions/listings/listingActions";
 import { SearchForm } from "@/components/ui/SearchForm";
 import { Listing } from "@/types/Listing";
 import { ListingOffer } from "@/components/ui/ListingOffer";

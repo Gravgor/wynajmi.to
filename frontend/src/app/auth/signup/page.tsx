@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { createUser } from '@/actions/users/userActions';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -23,22 +24,12 @@ export default function SignUp() {
     }
 
     try {
-      const res = await fetch('/api/authenticate/create-user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, username, password }),
-      });
-
-      if (res.ok) {
-        setSuccess('Account created successfully! Please log in.');
-        router.push('/auth/signin'); 
-      } else {
-        const { message } = await res.json();
-        setError(message || 'Something went wrong.');
-      }
+      const res = await createUser({ email, username, password });
+      setSuccess('Account created successfully! Please log in.');
+      router.push('/auth/signin'); 
     } catch (err) {
         console.error(err);
-      setError('An unexpected error occurred. Please try again.');
+        setError('An unexpected error occurred. Please try again.');
     }
   };
 
