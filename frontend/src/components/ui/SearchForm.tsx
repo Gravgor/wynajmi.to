@@ -278,7 +278,6 @@ export const SearchForm: React.FC<SearchFormProps> = ({
                 type={field.fieldType}
                 size="lg"
                 id={field.id}
-                {/* @ts-ignore */}
                 value={field.value}
                 onChange={(e) => field.setValue(e.target.value)}
                 placeholder={field.placeholder}
