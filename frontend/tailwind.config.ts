@@ -19,6 +19,13 @@ const config: Config = {
       }
     },
   },
-  plugins: [nextui()],
+  plugins: [nextui({
+    addCommonColors: true,
+      light: {
+        colors: {
+          accent: '#F97316',
+        }
+      }
+    })],
 };
 export default config;

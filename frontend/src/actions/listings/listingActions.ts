@@ -22,21 +22,37 @@ export async function getListings(id?: string): Promise<Listing[]> {
 export async function searchListings(query: {
     location?: string;
     propertyType?: string;
-    priceRange?: string;
+    priceRange?: string[];
     rooms?: string;
     area?: string;
     amenities?: string[];
 }): Promise<Listing[]> {
+    const newLocation = query.location ? normalizeString(query.location).toLowerCase(): null;
     const whereConditions: any[] = [];
-    if (query.location) {
-        whereConditions.push({ location: { contains: normalizeString(query.location) } });
+    if (newLocation) {
+        const locationParts = newLocation.split(',').map(part => part.trim());
+        whereConditions.push({
+            location: {
+                contains: locationParts[0],
+                mode: 'insensitive',
+            }
+        });
+        console.log(locationParts);
+        console.log(JSON.stringify(whereConditions, null, 2));
     }
     if (query.propertyType) {
         whereConditions.push({ propertyType: { contains: normalizeString(query.propertyType) } });
     }
     if (query.priceRange) {
-        whereConditions.push({ price: { equals: parseFloat(normalizeString(query.priceRange)) } });
+        const [minPrice, maxPrice] = Array.isArray(query.priceRange) ? query.priceRange : (query.priceRange as string).split(",");
+        whereConditions.push({
+            price: {
+                gte: minPrice,
+                lte: maxPrice,
+            },
+        });
     }
+
     if (query.rooms) {
         whereConditions.push({ rooms: { equals: parseInt(normalizeString(query.rooms), 10) } });
     }
@@ -48,9 +64,11 @@ export async function searchListings(query: {
     }
 
     try {
-        const listings = await prisma?.listing.findMany({
-            where: { AND: whereConditions },
-        }) || [];
+         const listings = await prisma?.listing.findMany({
+            where: {
+                AND: whereConditions,
+            }
+         })
         return listings as Listing[];
     } catch (err) {
         console.error(err);
@@ -87,7 +105,7 @@ export async function createListing(data: Partial<Listing>): Promise<Listing> {
             data: {
                 title,
                 description,
-                location,
+                location: normalizeString(location).toLowerCase(),
                 latitude,
                 longitude,
                 price,
