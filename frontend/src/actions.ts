@@ -33,6 +33,7 @@ export async function searchListings(query: {
   amenities?: string[];
 }): Promise<Listing[]> {
   const url = buildSearchUrl(query);
+  console.log(url);
   
   const response = await fetch(url, {
     method: 'GET',

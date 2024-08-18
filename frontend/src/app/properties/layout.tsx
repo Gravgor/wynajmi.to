@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import Footer from "@/components/Footer";
 import Providers from "@/components/providers/SessionProvider";
 import { getSession } from "next-auth/react";
+import Navbar from "@/components/Navbar";
 
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     description: "Wynajmij mieszkanie bez zbędnych formalności",
   };
 
-export default async function DashboardLayout({
+export default async function PropertiesLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;
@@ -24,7 +25,7 @@ export default async function DashboardLayout({
           <Providers session={session}>
             {children}
           </Providers>
-          <Footer />
+          <Footer className="relative bottom-0"/>
           </body>
       </html>
     );

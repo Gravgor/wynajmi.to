@@ -18,37 +18,33 @@ type Image = {
 export async function POST(req: NextRequest): Promise<Response> {
   try {
     const body = await req.formData();
-    const images = body.getAll("images") as Image[]; 
+    const image = body.get("image") as Image;
 
-    if (images.length === 0) {
-      return new Response("No images found", { status: 400 });
+    if (!image) {
+      return new Response("No image found", { status: 400 });
     }
 
-    const imageUrls: string[] = [];
-    for (const image of images) {
-      const buffer = await image.arrayBuffer();
-      const params: PutObjectCommandInput = {
-        Bucket: 'properties-photos',
-        Key: `uploads/${Date.now()}_${image.name}`,
-        Body: Buffer.from(buffer),
-        ContentType: image.type,
-      };
+    const buffer = await image.arrayBuffer();
+    const params: PutObjectCommandInput = {
+      Bucket: 'properties-photos',
+      Key: `uploads/${Date.now()}_${image.name}`,
+      Body: Buffer.from(buffer),
+      ContentType: image.type,
+    };
 
-      try {
-        await s3.send(new PutObjectCommand(params));
-        const url = `https://properties-photos.s3.eu-north-1.amazonaws.com/${params.Key}`;
-        imageUrls.push(url);
-        console.log("Uploaded image to S3", url);
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
+    try {
+      await s3.send(new PutObjectCommand(params));
+      const newImageUrl = `https://properties-photos.s3.eu-north-1.amazonaws.com/${params.Key}`;
+
+      return new Response(JSON.stringify({ url: newImageUrl }), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return new Response("Failed to upload image", { status: 500 });
     }
-
-    return new Response(JSON.stringify({ urls: imageUrls }), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
   } catch (error) {
     console.error("Error processing request:", error);
     return new Response("Error processing request", { status: 500 });
@@ -73,7 +69,6 @@ export async function DELETE(req: NextRequest): Promise<Response> {
 
     try {
       await s3.send(new DeleteObjectCommand(params));
-      console.log("Deleted image from S3", url);
     } catch (error) {
       console.error("Error deleting image:", error);
     }

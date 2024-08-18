@@ -52,7 +52,7 @@ export default function PropertiesListing() {
     };
 
     fetchInitialListings();
-  }, []);
+  }, [searchParams]);
 
   const handleSearch = async (query: {
     location: string;
@@ -76,25 +76,25 @@ export default function PropertiesListing() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8 h-[1100px]">
-      <h1 className="text-3xl font-bold mb-8">
+    <main className="container mx-auto px-4 py-8 h-screen">
+      <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">
         Znajdź swoje wymarzone mieszkanie
       </h1>
       <Suspense fallback={<Loading />}>
         <SearchForm onSearch={handleSearch} />
       </Suspense>
 
-      <section className="mt-12">
-        <h2 className="text-2xl font-bold mb-6">
+      <section className="mt-8 md:mt-12">
+        <h2 className="text-2xl md:text-2xl font-bold mb-4 md:mb-6">
           {results.length} ofert znalezionych
         </h2>
         <div className="flex justify-center items-center">
           {loading && <Loading />}
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-red-500 text-sm md:text-base">{error}</p>}
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-4 p-2 md:p-4">
           {results.length === 0 && !loading && !error && (
-            <p>Brak wyników wyszukiwania.</p>
+            <p className="col-span-1 text-center">Brak wyników wyszukiwania.</p>
           )}
           {!loading &&
             results.map((listing) => (

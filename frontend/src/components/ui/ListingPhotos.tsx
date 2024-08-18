@@ -13,7 +13,7 @@ export const ListingPhotos: React.FC<{ images: string[], location: string }> = (
     const remainingImagesCount = images.length - 6;
 
     return (
-        <div className="flex gap-2 items-start justify-start">
+        <div className="bg-white shadow-lg rounded-lg flex p-6 gap-2 items-start justify-start">
             <Image
                 priority
                 key={1}
@@ -45,7 +45,7 @@ export const ListingPhotos: React.FC<{ images: string[], location: string }> = (
                         onClick={() => setOpen(true)}
                     >
                         <Image
-                            src={images[5]} // The 6th image
+                            src={images[5]}
                             alt={location}
                             width={300}
                             height={200}

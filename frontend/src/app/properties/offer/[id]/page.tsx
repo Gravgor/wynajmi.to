@@ -1,14 +1,12 @@
 import { getListing } from "@/actions";
 import { IoIosBed } from "react-icons/io";
 import { BsHouseFill } from "react-icons/bs";
-import { FaCouch, FaWifi, FaTv, FaUtensils } from "react-icons/fa";
 import { MapComponent } from "@/components/ui/Map";
 import { ListingPhotos } from "@/components/ui/ListingPhotos";
 import { ContactCard } from "@/components/ui/ContactCard";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const listing = await getListing(params.id);
-
 
   const propertyTypeText = (() => {
     switch (listing.propertyType) {
@@ -24,58 +22,60 @@ export default async function Page({ params }: { params: { id: string } }) {
   })();
 
   return (
-    <main className="container mx-auto px-4 py-8 h-full">
-      <h1 className="text-3xl font-bold mb-8">Oferta</h1>
+    <main className="container mx-auto px-4 py-6 md:py-8">
+      <h1 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">Oferta</h1>
       {listing.images && <ListingPhotos images={listing.images} location={listing.location}/>}
-      <div className="flex gap-2 mt-4 items-start justify-center">
-        <div className="flex-1 flex flex-col p-4">
-          <h2 className="text-2xl font-semibold">{listing.price.toLocaleString()} PLN/mies</h2>
-          <h1 className="text-5xl font-semibold">{listing.title}</h1>
-          <h3 className="text-xl text-gray-500">{listing.location}</h3>
-          <div className="flex-1 flex mt-8 gap-4">
-            <span className="flex gap-1 text-md text-[#1F2937] mb-3">
-              <IoIosBed className="w-6 h-6" /> {propertyTypeText}{" "}
+
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 mt-6">
+        <div className="flex-1 bg-white shadow-lg rounded-lg p-4 md:p-6">
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">{listing.price.toLocaleString()} PLN/mies</h2>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">{listing.title}</h1>
+          <h3 className="text-lg md:text-xl text-gray-600 mt-1">{listing.location}</h3>
+
+          <div className="flex flex-wrap gap-3 md:gap-4 mt-4 text-gray-700">
+            <span className="flex items-center gap-1 md:gap-2 text-base md:text-lg">
+              <IoIosBed className="text-yellow-500" /> {propertyTypeText}
             </span>
-            <span className="flex gap-1 text-md text-[#1F2937] mb-3">
-              <BsHouseFill className="w-6 h-6" /> {listing.area} m<sup>2</sup>
+            <span className="flex items-center gap-1 md:gap-2 text-base md:text-lg">
+              <BsHouseFill className="text-green-500" /> {listing.area} m<sup>2</sup>
             </span>
-            <span className="text-md text-[#1F2937] mb-3">2021 rok</span>
+            <span className="flex items-center gap-1 md:gap-2 text-base md:text-lg">2021 rok</span>
           </div>
-          <div className="mt-4">
-            <h1 className="text-4xl font-semibold">Opis</h1>
-            <p className="text-lg text-[#1F2937] mt-3 w-3/4">
-              {listing.description}
-            </p>
+
+          <div className="mt-6 md:mt-8">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">Opis</h2>
+            <p className="text-base md:text-lg text-gray-700 mt-3">{listing.description}</p>
           </div>
-          <div className="mt-8">
-            <h1 className="text-4xl font-semibold mb-6 text-black">
-              Wyposażenie
-            </h1>
-            <ul className="grid grid-cols-2 gap-4">
+
+          <div className="mt-6 md:mt-8">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-3">Wyposażenie</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
               {listing.amenities.map((item, index) => (
                 <li
                   key={index}
-                  className="flex items-center bg-[#E5E7EB] p-3 rounded-lg shadow-sm"
+                  className="flex items-center bg-gray-100 p-3 md:p-4 rounded-lg shadow-sm"
                 >
-                  <span className="text-lg text-black">{item}</span>
+                  <span className="text-base md:text-lg text-gray-800">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
         </div>
-         <ContactCard
+
+        <ContactCard
           id={listing.id}
-          name={listing.user.name}
-          phoneNumber={''}
+          name={listing.user.firstName + ' ' + listing.user.lastName}
+          phoneNumber={'+48 572 418 475'}
           email={listing.user.email}
         />
       </div>
-      <div className="mt-4 h-full w-full">
-        <h1 className="text-4xl font-semibold">Lokalizacja</h1>
-        <span className="text-lg text-[#1F2937] mb-3">
-          {listing.location}
-        </span>
-        <MapComponent latitude={listing.latitude} longitude={listing.longitude} />
+
+      <div className="mt-6 md:mt-8 flex-1 bg-white shadow-lg rounded-lg p-4 md:p-6">
+        <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">Lokalizacja</h2>
+        <span className="text-base md:text-lg text-gray-700 block mt-2">{listing.location}</span>
+        <div className="mt-4 w-full h-64 md:h-80 rounded-lg overflow-hidden">
+          <MapComponent latitude={listing.latitude} longitude={listing.longitude} />
+        </div>
       </div>
     </main>
   );

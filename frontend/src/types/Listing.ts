@@ -24,7 +24,8 @@ export type ContactPerson = {
     images: string[];
     user: {
       id: string;
-      name: string;
+      firstName: string;
+      lastName: string;
       email: string;
     };
     availableDates: {

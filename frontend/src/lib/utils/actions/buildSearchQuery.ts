@@ -6,7 +6,7 @@ export function buildSearchUrl(query: {
     area?: string;
     amenities?: string[];
   }): string {
-    const apiBaseUrl = process.env.ENV === 'vercel' ? 'https://wynajmi-to.vercel.app/api' : 'http://localhost:3000/api';
+    const apiBaseUrl = process.env.ENV === 'vercel' ? 'https://wynajmi-to.vercel.app/api/' : 'http://localhost:3000/api/';
     const queryParams: string[] = [];
   
     if (query.location) queryParams.push(`location=${encodeURIComponent(query.location)}`);
@@ -18,6 +18,6 @@ export function buildSearchUrl(query: {
       queryParams.push(`amenities=${encodeURIComponent(query.amenities.join(','))}`);
     }
   
-    return `${apiBaseUrl}?${queryParams.join('&')}`;
+    return `${apiBaseUrl}listings/search?${queryParams.join('&')}`;
   }
   
