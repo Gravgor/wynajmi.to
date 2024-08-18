@@ -12,8 +12,8 @@ import { SearchForm } from "@/components/ui/SearchForm";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center px-4 py-8 md:px-8 md:py-12 -mt-[60px]">
-      <Hero  />
-      <SearchForm className="relative bottom-[-80px] md:bottom-[60px]" onSearch={searchListings} />
+      <Hero />
+      <SearchForm className="relative bottom-[-80px] md:bottom-[120px]" onSearch={searchListings} />
       <section id="why-us" className="w-full">
         <div className="mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-12">Dlaczego warto wybrać Wynajmi.to?</h2>

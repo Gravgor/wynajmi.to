@@ -54,6 +54,7 @@ export default function PropertiesListing() {
           amenities: searchParams.getAll("amenities") || [],
         };
         try {
+          //@ts-ignore
           const data = await searchListings(query);
           setResults(data);
         } catch (err) {
@@ -78,7 +79,7 @@ export default function PropertiesListing() {
   const handleSearch = async (query: {
     location: string;
     propertyType: string;
-    priceRange: string;
+    priceRange: [number, number];
     rooms: string;
     area: string;
     amenities: string[];
@@ -115,9 +116,6 @@ export default function PropertiesListing() {
     }));
   };
 
-  const applyFilters = () => {
-    handleSearch(filters);
-  };
 
  
   const toggleSortPanel = () => {
@@ -134,9 +132,9 @@ export default function PropertiesListing() {
       </Suspense>
 
       <section className="mt-8 md:mt-12">
-        <h2 className="text-2xl md:text-2xl font-bold mb-4 md:mb-6">
+        {!loading && <h2 className="text-2xl md:text-2xl font-bold mb-4 md:mb-6">
           {results.length} ofert znalezionych
-        </h2>
+        </h2>}
         <div className="flex justify-center items-center">
           {loading && <Loading />}
           {error && <p className="text-red-500 text-sm md:text-base">{error}</p>}

@@ -6,7 +6,7 @@ export default function Hero() {
     return (
         <section
             id="hero"
-            className="relative flex flex-col items-center justify-center w-screen h-[400px] md:h-[540px] text-white overflow-hidden bg-cover bg-center"
+            className="relative flex flex-col items-center justify-center w-screen h-[400px] md:h-[640px] text-white"
         >
             <div
                 className="absolute inset-0 bg-cover bg-center"

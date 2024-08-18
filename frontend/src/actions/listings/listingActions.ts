@@ -22,7 +22,7 @@ export async function getListings(id?: string): Promise<Listing[]> {
 export async function searchListings(query: {
     location?: string;
     propertyType?: string;
-    priceRange?: string[];
+    priceRange?: [number, number];
     rooms?: string;
     area?: string;
     amenities?: string[];
