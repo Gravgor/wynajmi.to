@@ -155,3 +155,9 @@ export default function ScheduleVisitPage({
   );
 }
 */
+
+export default function ScheduleVisitPage() {
+  return <>
+  <h1 className="text-3xl font-bold mb-8">Umów się na oględziny</h1>
+  </>
+}
