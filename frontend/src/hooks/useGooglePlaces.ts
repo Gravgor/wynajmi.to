@@ -24,7 +24,7 @@ export function useGooglePlaces() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-Goog-Api-Key': 'AIzaSyB7_Ac_jwt3sQvK8Fn09MPKWCcNrgqz7A4',
+            'X-Goog-Api-Key': process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
             'X-Goog-FieldMask': 'places.displayName,places.formattedAddress',
         },
         body: JSON.stringify({
