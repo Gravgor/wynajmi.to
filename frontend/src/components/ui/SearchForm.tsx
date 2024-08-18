@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils/cn";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { Slider } from "@nextui-org/react";
 
 interface SearchFormProps {
   className?: string;
@@ -22,7 +23,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
 }) => {
   const [location, setLocation] = useState("");
   const [propertyType, setPropertyType] = useState("");
-  const [priceRange, setPriceRange] = useState("");
+  const [priceRange, setPriceRange] = useState<number[]>([0, 5000]);
   const [rooms, setRooms] = useState("");
   const [area, setArea] = useState("");
   const [amenities, setAmenities] = useState<string[]>([]);

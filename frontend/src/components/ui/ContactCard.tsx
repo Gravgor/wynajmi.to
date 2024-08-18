@@ -1,7 +1,10 @@
 "use client";
-import Image from 'next/image';
-import Link from 'next/link';
 import { FaPhoneAlt, FaEnvelope, FaRegCalendarAlt } from 'react-icons/fa';
+import { Avatar, Button, Card, CardBody, CardHeader, Link } from '@nextui-org/react';
+import { MyButton } from './Button';
+import {RangeCalendar} from "@nextui-org/calendar";
+import { getLocalTimeZone, isWeekend, today } from '@internationalized/date';
+import {useLocale} from "@react-aria/i18n";
 
 type ContactCardProps = {
   id: string;
@@ -16,47 +19,56 @@ export const ContactCard = ({
   phoneNumber,
   email,
 }: ContactCardProps) => {
+  let now = today(getLocalTimeZone())
+  let disabledRanges = [
+    [now, now.add({days: 5})],
+    [now.add({days: 14}), now.add({days: 16})],
+    [now.add({days: 23}), now.add({days: 24})],
+  ];
+
+  let {locale} = useLocale();
+
+  let isDateUnavailable = (date: any) =>
+    isWeekend(date, locale) ||
+    disabledRanges.some(
+      (interval) => date.compare(interval[0]) >= 0 && date.compare(interval[1]) <= 0,
+    );
   return (
-    <div className="flex-1 bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto border border-gray-200">
-      <div className="flex flex-col items-center mb-6">
-        <Image
-          src="/images/placeholders/testimonial/jan.jpg" // Zaktualizuj ścieżkę do zdjęcia
-          alt="Zdjęcie kontaktowe"
-          width={120}
-          height={64}
-          objectFit="cover"
-          className="rounded-full shadow-md border-4 border-primary"
+    <Card className="max-w-[450px]">
+    <CardHeader className="flex items-center gap-3">
+      <Avatar src={`https://i.pravatar.cc/150?u=${id}`} alt={name} />
+      <div>
+        <h2 className="text-lg font-semibold">{name}</h2>
+        <p className="text-gray-600">Osoba prywatna</p>
+      </div>
+    </CardHeader>
+    <CardBody>
+      <div className="flex items-center gap-3">
+        <FaPhoneAlt className="text-xl text-primary" />
+        <Link href={`tel:${phoneNumber}`} className="text-gray-700">{phoneNumber}</Link>
+      </div>
+      <div className="flex items-center gap-3 mt-2">
+        <FaEnvelope className="text-xl text-primary" />
+        <Link href={`mailto:${email}`} className="text-gray-700">{email}</Link>
+      </div>
+      <div className="flex flex-col items-center gap-3 mt-2">
+        <span className="text-xl text-primary">
+          Dostępne terminy na oględziny
+        </span>
+        <RangeCalendar 
+        isReadOnly={true}
+        aria-label="Date (Unavailable)"
+        isDateUnavailable={isDateUnavailable} 
         />
-        <h1 className="text-2xl font-semibold mt-4 text-gray-800">{name}</h1>
       </div>
-      <div className="space-y-6">
-        <div className="flex items-center gap-4 bg-gray-100 p-4 rounded-lg shadow-sm">
-          <FaPhoneAlt className="text-primary w-6 h-6" />
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">Telefon</h2>
-            <p className="text-md text-gray-600">{phoneNumber || 'Brak numeru telefonu'}</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 bg-gray-100 p-4 rounded-lg shadow-sm">
-          <FaEnvelope className="text-primary w-6 h-6" />
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">E-mail</h2>
-            <p className="text-md text-gray-600">{email}</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 bg-gray-100 p-4 rounded-lg shadow-sm">
-          <FaRegCalendarAlt className="text-primary w-6 h-6" />
-          <div className='flex flex-col'>
-            <h2 className="text-lg font-semibold text-gray-800">Oględziny mieszkania</h2>
-            <Link href={`/properties/offer/${id}/schedule-visit`} className="mt-2 w-full bg-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-primary-dark transition duration-200 text-center">
-              Umów się na oględziny
-            </Link>
-          </div>
-        </div>
-        <Link href={`mailto:${email}`} className="block w-full bg-orange-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-orange-500-dark transition duration-200 text-center">
-          Napisz wiadomość
-        </Link>
+      <div className="flex items-center gap-3 mt-2">
+        <FaRegCalendarAlt className="text-xl text-primary" />
+        <Link href={`/properties/offer/${id}/schedule-visit`} className="text-gray-700">Umów spotkanie</Link>
       </div>
-    </div>
+      <div className="mt-4">
+        <MyButton size="xl" color="accent">Wyślij wiadomość</MyButton>
+      </div>
+    </CardBody>
+    </Card>
   );
 };
