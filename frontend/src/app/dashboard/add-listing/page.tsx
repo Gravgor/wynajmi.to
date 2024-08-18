@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createListing } from "@/actions";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -10,6 +9,7 @@ import TimePicker from "react-time-picker";
 import "react-datetime/css/react-datetime.css";
 import { FaImages, FaInfoCircle, FaMapMarkerAlt, FaTools } from "react-icons/fa";
 import Image from "next/image";
+import { createListing } from "@/actions/listings/listingActions";
 
 type Suggestion = { title: string; placeId: string };
 
