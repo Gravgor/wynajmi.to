@@ -9,12 +9,17 @@ import {
   Autocomplete,
   AutocompleteItem,
   AutocompleteSection,
+  Checkbox,
 } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 import { FaLocationDot, FaHouse, FaDollarSign, FaSort } from "react-icons/fa6";
-import { MdBedroomParent } from "react-icons/md";
+import { MdBedroomParent, MdBathroom, MdBalcony } from "react-icons/md";
 import { TbMeterSquare } from "react-icons/tb";
+import { BiHomeAlt } from "react-icons/bi";
+import { LuDog, LuParkingCircle, LuTrees } from "react-icons/lu";
+import { CgGym } from "react-icons/cg";
 import { useGooglePlaces } from "@/hooks/useGooglePlaces";
+import { IoIosWifi } from "react-icons/io";
 
 interface SearchFormProps {
   className?: string;
@@ -23,7 +28,10 @@ interface SearchFormProps {
     propertyType: string;
     priceRange: [number, number];
     rooms: string;
+    bathrooms: string;
     area: string;
+    petsAllowed: boolean;
+    buildingType: string;
     amenities: string[];
     sort: string;
   }) => void;
@@ -37,7 +45,10 @@ export const SearchForm: React.FC<SearchFormProps> = ({
   const [propertyType, setPropertyType] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [rooms, setRooms] = useState("");
+  const [bathrooms, setBathrooms] = useState("");
   const [area, setArea] = useState("");
+  const [petsAllowed, setPetsAllowed] = useState<boolean>(false);
+  const [buildingType, setBuildingType] = useState("");
   const [amenities, setAmenities] = useState<string[]>([]);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [sort, setSort] = useState<string>("price-asc");
@@ -53,7 +64,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
       router.push(
         `/properties?location=${location}&propertyType=${propertyType}&priceRange=${priceRange.join(
           ","
-        )}&rooms=${rooms}&area=${area}&amenities=${amenities.join(
+        )}&rooms=${rooms}&bathrooms=${bathrooms}&area=${area}&petsAllowed=${petsAllowed}&buildingType=${buildingType}&amenities=${amenities.join(
           ","
         )}&sort=${sort}`
       );
@@ -64,7 +75,10 @@ export const SearchForm: React.FC<SearchFormProps> = ({
       propertyType,
       priceRange,
       rooms,
+      bathrooms,
       area,
+      petsAllowed,
+      buildingType,
       amenities,
       sort,
     });
@@ -86,22 +100,21 @@ export const SearchForm: React.FC<SearchFormProps> = ({
       propertyType,
       priceRange,
       rooms,
+      bathrooms,
       area,
+      petsAllowed,
+      buildingType,
       amenities,
       sort: value,
     });
   };
 
   const availableAmenities = [
-    { id: "balcony", label: "Balkon" },
-    { id: "parking", label: "Miejsce parkingowe" },
-    { id: "furnished", label: "Umeblowane" },
-    { id: "elevator", label: "Winda" },
-    { id: "garden", label: "Ogród" },
-    { id: "security", label: "Ochrona" },
-    { id: "pool", label: "Basen" },
-    { id: "gym", label: "Siłownia" },
-    { id: "wifi", label: "Wi-Fi" },
+    { id: "balcony", label: "Balkon", icon: <MdBalcony /> },
+    { id: "garden", label: "Ogród", icon: <LuTrees /> },
+    { id: "parking", label: "Parking", icon: <LuParkingCircle /> },
+    { id: "gym", label: "Siłownia", icon: <CgGym /> },
+    { id: "wifi", label: "Wi-Fi", icon: <IoIosWifi /> },
   ];
 
   const onLocationInputChanged = async (value: string) => {
@@ -111,10 +124,8 @@ export const SearchForm: React.FC<SearchFormProps> = ({
   };
 
   const onLocationSelectionChange = (key: any) => {
-    console.log(key);
     setLocation(key);
-  }
-
+  };
 
   return (
     <form
@@ -149,7 +160,9 @@ export const SearchForm: React.FC<SearchFormProps> = ({
               { value: "studio", label: "Kawalerka" },
               { value: "1-bedroom", label: "1-pokojowe" },
               { value: "2-bedroom", label: "2-pokojowe" },
+              { value: "apartment", label: "Mieszkanie" },
               { value: "house", label: "Dom" },
+              { value: "townhouse", label: "Dom szeregowy" },
             ],
           },
           {
@@ -161,6 +174,17 @@ export const SearchForm: React.FC<SearchFormProps> = ({
             placeholder: "np. 2",
             icon: (
               <MdBedroomParent className="text-[#F97316] relative bottom-1" />
+            ),
+          },
+          {
+            id: "bathrooms",
+            label: "Liczba łazienek",
+            value: bathrooms,
+            fieldType: "number",
+            setValue: setBathrooms,
+            placeholder: "np. 1",
+            icon: (
+              <MdBathroom className="text-[#F97316] relative bottom-1" />
             ),
           },
           {
@@ -294,20 +318,37 @@ export const SearchForm: React.FC<SearchFormProps> = ({
       <div className="flex flex-col gap-4 mt-4">
         <div className="flex flex-wrap gap-4">
           <div className="flex flex-wrap gap-2 w-1/2">
+            
+             <div className="flex flex-col gap-2 p-1">
+             <div className="text-lg font-semibold text-gray-800">Udogodnienia</div>
+             <div className="flex flex-wrap gap-2 ml-1">
+             <Checkbox
+             defaultChecked={petsAllowed}
+              onChange={() => setPetsAllowed(!petsAllowed)}
+              icon={<LuDog  />}
+              color="warning"
+              >
+              Zwierzęta dozwolone
+              </Checkbox>
+             </div>
+            <div className="flex flex-wrap gap-2">
             {availableAmenities.map((amenity) => (
               <Chip
                 key={amenity.id}
                 onClick={() => handleAmenityToggle(amenity.id)}
+                startContent={amenity.icon}
                 className={cn(
-                  "px-3 py-1 text-sm font-semibold rounded-full transition-colors duration-300 cursor-pointer",
+                  "px-4 py-2 text-sm flex  font-semibold rounded-full transition-colors duration-300 cursor-pointer",
                   amenities.includes(amenity.id)
-                    ? "bg-blue-500 text-white"
+                    ? "bg-accent text-white"
                     : "bg-gray-200 text-gray-500 hover:bg-gray-300"
                 )}
               >
-                {amenity.label}
+                 {amenity.label}
               </Chip>
             ))}
+            </div>
+             </div>
           </div>
           <div className="flex-1 flex items-center justify-end">
             <div className="flex flex-col md:flex-row items-center gap-4">

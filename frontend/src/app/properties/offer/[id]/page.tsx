@@ -1,4 +1,3 @@
-
 import { IoIosBed } from "react-icons/io";
 import { BsHouseFill } from "react-icons/bs";
 import { MapComponent } from "@/components/ui/Map";
@@ -6,7 +5,8 @@ import { ListingPhotos } from "@/components/ui/ListingPhotos";
 import { ContactCard } from "@/components/ui/ContactCard";
 import { getListings } from "@/actions/listings/listingActions";
 import { Listing } from "@/types/Listing";
-import { Card, CardBody, Chip, Divider } from "@nextui-org/react";
+import { Card, CardBody, Chip, Divider, Button, Avatar,  } from "@nextui-org/react";
+import { FaFacebookSquare, FaTwitterSquare, FaInstagramSquare } from "react-icons/fa";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const [listing]: Listing[] = await getListings(params.id);
@@ -63,6 +63,30 @@ export default async function Page({ params }: { params: { id: string } }) {
               ))}
             </ul>
           </div>
+
+          <div className="mt-6 md:mt-8">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">Okolica</h2>
+            <p className="text-base md:text-lg text-gray-700 mt-3">{"To jest dobra okolica z łatwym dostępem do sklepów, restauracji i transportu."}</p>
+          </div>
+
+          <div className="mt-6 md:mt-8">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">Dodatkowe informacje</h2>
+            <p className="text-base md:text-lg text-gray-700 mt-3">{"To jest świetne miejsce do życia. Polecam go każdemu."}</p>
+          </div>
+          <div className="mt-6 md:mt-8">
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">Udostępnij na</h2>
+          <div className="mt-3 flex gap-4">
+            <Button color="default">
+              <FaFacebookSquare size={24} />
+            </Button>
+            <Button color="default">
+              <FaTwitterSquare size={24} />
+            </Button>
+            <Button color="default">
+              <FaInstagramSquare size={24} />
+            </Button>
+          </div>
+        </div>
         </div>
 
         <ContactCard
