@@ -87,13 +87,21 @@ export const ListingOffer: React.FC<Listing> = ({
         <p className="text-sm text-gray-600 mb-4">{truncatedDescription}</p>
         <div className="flex-1 flex flex-col justify-end">
           <div className="flex flex-col items-start mb-4">
+            {/* Add highlights section */}
+            <h3 className="text-lg font-semibold mb-2 text-gray-800">Highlights</h3>
+            <ul className="list-disc text-sm text-gray-600 ml-4">
+              {/*  Add highlights based on property features  */}
+              <li>Spacious living area</li>
+              <li>Modern kitchen with stainless steel appliances</li>
+              <li>Private balcony with city views</li>
+            </ul>
           </div>
           <div className="flex justify-between items-center mb-4">
             <p className="text-lg font-semibold text-gray-900">{price.toLocaleString('pl')} PLN/mies</p>
             <p className="text-sm text-gray-500">{area} m²</p>
           </div>
           <Link
-            className="mt-4 bg-orange-500 text-white text-center py-2 px-4 rounded-md shadow-md hover:bg-[#D97706] transition"
+            className=" bg-orange-500 text-white text-center py-2 px-4 rounded-md shadow-md hover:bg-[#D97706] transition"
             href={detailPageUrl}
           >
             Zobacz ofertę
