@@ -35,10 +35,10 @@ export default async function Page({ params }: { params: { id: string } }) {
           <h3 className="text-lg md:text-xl text-gray-600 mt-1">{listing.location}</h3>
           <Divider className="my-2 mb-4" />
           <div className="flex flex-wrap gap-3 md:gap-4 mt-4 text-gray-700">
-            <Chip color="warning" variant="shadow" startContent={<IoIosBed className="text-green-500" />} className="text-base font-semibold md:text-lg p-2">
+            <Chip color="warning" variant="shadow" startContent={<IoIosBed className="text-black" />} className="text-base font-semibold md:text-lg p-2">
             {propertyTypeText}
             </Chip>
-            <Chip color="warning" variant="shadow" startContent={<BsHouseFill className="text-green-500" />} className="text-base font-semibold md:text-lg p-2">
+            <Chip color="warning" variant="shadow" startContent={<BsHouseFill className="text-black" />} className="text-base font-semibold md:text-lg p-2">
             {listing.area} m<sup>2</sup>
             </Chip>
             <Chip color="warning" variant="shadow" className="text-base font-semibold md:text-lg p-2">
