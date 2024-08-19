@@ -320,7 +320,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
           <div className="flex flex-wrap gap-2 w-1/2">
             
              <div className="flex flex-col gap-2 p-1">
-             <div className="text-lg font-semibold text-gray-800">Udogodnienia</div>
+             <div className="text-lg font-semibold text-gray-800">Wybierz udogodnienia których potrzebujesz w swoim nowym mieszkaniu</div>
              <div className="flex flex-wrap gap-2 ml-1">
              <Checkbox
              defaultChecked={petsAllowed}
